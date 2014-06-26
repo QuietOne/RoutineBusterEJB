@@ -48,7 +48,7 @@ public class SessionClient implements SessionClientLocal {
     public Client getClient(String username) {
         Client client = null;
         try {
-            client = (Client) em.createQuery("SELECT * FROM client WHERE username=:u")
+            client = (Client) em.createQuery("SELECT c FROM client as c WHERE username=:u")
                     .setParameter("u", username).getSingleResult();
         } catch (NoResultException nre) {
             //no result has been found

@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package domain;
 
 import java.io.Serializable;
@@ -14,7 +8,8 @@ import javax.validation.constraints.NotNull;
 
 /**
  *
- * @author tihomir
+ * @author Tihomir Radosavljvic
+ * @version 1.0
  */
 @Embeddable
 public class AnsweredPK implements Serializable {

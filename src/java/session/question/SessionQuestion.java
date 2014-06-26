@@ -14,6 +14,7 @@ import javax.persistence.PersistenceContext;
  */
 @Stateless
 public class SessionQuestion implements SessionQuestionLocal {
+
     @PersistenceContext(unitName = "RoutineBusterEJBPU")
     private EntityManager em;
 
@@ -21,7 +22,7 @@ public class SessionQuestion implements SessionQuestionLocal {
     public List<Question> getQuestions(Category category) {
         List<Question> list = null;
         try {
-            list = em.createQuery("SELECT * FROM question WHERE idCat=:cat")
+            list = em.createQuery("SELECT q FROM Question q WHERE q.idCat=:cat")
                     .setParameter("cat", category.getIdCat()).getResultList();
         } catch (Exception e) {
             e.printStackTrace();
@@ -49,8 +50,8 @@ public class SessionQuestion implements SessionQuestionLocal {
     public List<Question> autocompleteQuestion(String text) {
         List<Question> list = null;
         try {
-            list = em.createQuery("SELECT * FROM question WHERE text LIKE :te LIMIT 10")
-                    .setParameter("te", text).getResultList();
+            list = em.createQuery("SELECT q FROM Question q WHERE q.text LIKE :te LIMIT 10")
+                    .setParameter("te", text + "%").getResultList();
         } catch (Exception e) {
             e.printStackTrace();
         }

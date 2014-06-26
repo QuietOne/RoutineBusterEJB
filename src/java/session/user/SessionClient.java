@@ -14,7 +14,8 @@ import javax.persistence.PersistenceContext;
  * @version 1.0
  */
 @Stateless
-public class SessionClient implements SessionClientLocal {  
+public class SessionClient implements SessionClientLocal {
+
     @PersistenceContext(unitName = "RoutineBusterEJBPU")
     private EntityManager em;
 
@@ -28,7 +29,7 @@ public class SessionClient implements SessionClientLocal {
     public boolean validateLogin(String username, String password) {
         try {
             //it only matters if this can be executed without problem
-            em.createQuery("SELECT * FROM client WHERE username=:u AND password=:p")
+            em.createQuery("SELECT c FROM Client c WHERE c.username=:u AND c.password=:p")
                     .setParameter("u", username).setParameter("p", password).getSingleResult();
         } catch (NoResultException nre) {
             //no result has been found
@@ -48,7 +49,7 @@ public class SessionClient implements SessionClientLocal {
     public Client getClient(String username) {
         Client client = null;
         try {
-            client = (Client) em.createQuery("SELECT c FROM client as c WHERE username=:u")
+            client = (Client) em.createQuery("SELECT c FROM Client c WHERE c.username=:u")
                     .setParameter("u", username).getSingleResult();
         } catch (NoResultException nre) {
             //no result has been found
@@ -105,8 +106,8 @@ public class SessionClient implements SessionClientLocal {
     public List<Client> autocompleteClient(String username) {
         List<Client> list = null;
         try {
-            list = em.createQuery("SELECT * FROM client WHERE username LIKE :u LIMIT 10")
-                    .setParameter("u", username).getResultList();
+            list = em.createQuery("SELECT c FROM Client c WHERE c.username LIKE :u LIMIT 10")
+                    .setParameter("u", username + "%").getResultList();
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -76,6 +76,7 @@ public class Validate {
         try {
             client = new SessionClient().getClient(username);
         } catch (Exception ex) {
+            ex.printStackTrace();
             return false;
         }
         return client == null;

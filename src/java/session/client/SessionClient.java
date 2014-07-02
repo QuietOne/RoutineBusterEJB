@@ -48,23 +48,23 @@ public class SessionClient implements SessionClientLocal {
     @Override
     public Client getClient(String username) {
         Client client = null;
-         try {
-         client = (Client) em.createQuery("SELECT c FROM Client c WHERE c.username=:u")
-         .setParameter("u", username).getSingleResult();
-         } catch (NoResultException nre) {
-         //no result has been found
-         return null;
-         } catch (Exception ex) {
-         throw new RuntimeException(ex);
-         }
-         return client;
-        /*List<Client> clients = null;
-        clients = (List<Client>) em.createQuery("SELECT c FROM Client c WHERE c.username=:u")
-                .setParameter("u", username).getResultList();
-        if (clients != null) {
-            return clients.get(0);
+        try {
+            client = (Client) em.createQuery("SELECT c FROM Client c WHERE c.username=:u")
+                    .setParameter("u", username).getSingleResult();
+        } catch (NoResultException nre) {
+            //no result has been found
+            return null;
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
         }
-        return null;*/
+        return client;
+        /*List<Client> clients = null;
+         clients = (List<Client>) em.createQuery("SELECT c FROM Client c WHERE c.username=:u")
+         .setParameter("u", username).getResultList();
+         if (clients != null) {
+         return clients.get(0);
+         }
+         return null;*/
     }
 
     @Override
@@ -93,13 +93,13 @@ public class SessionClient implements SessionClientLocal {
         if (!validate.lastName(client.getConame())) {
             throw new Exception("Prezime nije dobro unešeno");
         }
-        if (!validate.password(client.getPassword())) {
-            throw new Exception("Korisnička lozinka nije dobro unešena");
-        }
         if (!validate.username(client.getUsername())) {
             throw new Exception("Korisničko ime nije dobro unešeno");
         }
-        if (!validate.email(client.getPassword())) {
+        if (!validate.password(client.getPassword())) {
+            throw new Exception("Korisnička lozinka nije dobro unešena");
+        }
+        if (!validate.email(client.getEmail())) {
             throw new Exception("Email nije dobro unešen");
         }
     }

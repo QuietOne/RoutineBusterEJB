@@ -66,23 +66,6 @@ public class Validate {
     }
 
     /**
-     * Validate of username.
-     *
-     * @param username
-     * @return false if username is already taken
-     */
-    public boolean username(String username) {
-        Client client = null;
-        try {
-            client = new SessionClient().getClient(username);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            return false;
-        }
-        return client == null;
-    }
-
-    /**
      * Validate if requirements for changing password are met. <br>
      * <ol>
      * <li>Previous password must be equal to one that is in client.</li>

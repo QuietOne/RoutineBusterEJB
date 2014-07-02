@@ -85,7 +85,7 @@ public class SessionClient implements SessionClientLocal {
     }
 
     @Override
-    public void validateRegister(Client client) throws Exception {
+    public void validateRegister(Client client, String confirmPassword) throws Exception {
         Validate validate = new Validate();
         if (!validate.firstName(client.getName())) {
             throw new Exception("Ime nije dobro unešeno");
@@ -93,15 +93,28 @@ public class SessionClient implements SessionClientLocal {
         if (!validate.lastName(client.getConame())) {
             throw new Exception("Prezime nije dobro unešeno");
         }
-        if (!validate.username(client.getUsername())) {
+        if (!validateUsername(client.getUsername())) {
             throw new Exception("Korisničko ime nije dobro unešeno");
         }
         if (!validate.password(client.getPassword())) {
             throw new Exception("Korisnička lozinka nije dobro unešena");
         }
+        if (!client.getPassword().equals(confirmPassword)) {
+            throw new Exception("Šifre se ne poklapaju");
+        }
         if (!validate.email(client.getEmail())) {
             throw new Exception("Email nije dobro unešen");
         }
+    }
+    
+    private boolean validateUsername(String username){
+        Client client = null;
+        try {
+            client = getClient(username);
+        } catch (Exception ex) {
+            return false;
+        }
+        return client == null;
     }
 
     @Override
@@ -120,5 +133,4 @@ public class SessionClient implements SessionClientLocal {
         }
         return list;
     }
-
 }

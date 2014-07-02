@@ -22,7 +22,7 @@ public interface SessionClientLocal {
 
     void approveClient(Client client) throws Exception;
 
-    void validateRegister(Client client) throws Exception;
+    void validateRegister(Client client, String confirmPassword) throws Exception;
 
     void addClient(Client client) throws Exception;
 

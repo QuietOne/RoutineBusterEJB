@@ -1,12 +1,20 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
 package domain;
 
 import java.io.Serializable;
 import java.util.List;
+import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -19,50 +27,47 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Tihomir Radosavljvic
- * @version 1.0
+ * @author tihomir
  */
 @Entity
 @Table(name = "answer")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Answer.findAll", query = "SELECT a FROM Answer a"),
-    @NamedQuery(name = "Answer.findByIdAnswer", query = "SELECT a FROM Answer a WHERE a.answerPK.idAnswer = :idAnswer"),
-    @NamedQuery(name = "Answer.findByIdQuestion", query = "SELECT a FROM Answer a WHERE a.answerPK.idQuestion = :idQuestion"),
+    @NamedQuery(name = "Answer.findByIdAnswer", query = "SELECT a FROM Answer a WHERE a.idAnswer = :idAnswer"),
     @NamedQuery(name = "Answer.findByText", query = "SELECT a FROM Answer a WHERE a.text = :text"),
     @NamedQuery(name = "Answer.findByCorrect", query = "SELECT a FROM Answer a WHERE a.correct = :correct")})
 public class Answer implements Serializable {
     private static final long serialVersionUID = 1L;
-    @EmbeddedId
-    protected AnswerPK answerPK;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "idAnswer")
+    private Integer idAnswer;
     @Size(max = 250)
     @Column(name = "text")
     private String text;
     @Column(name = "correct")
     private Boolean correct;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "answer", fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idAnswer")
     private List<Answeritem> answeritemList;
-    @JoinColumn(name = "idQuestion", referencedColumnName = "idQuestion", insertable = false, updatable = false)
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private Question question;
+    @JoinColumn(name = "idQuestion", referencedColumnName = "idQuestion")
+    @ManyToOne(optional = false)
+    private Question idQuestion;
 
     public Answer() {
     }
 
-    public Answer(AnswerPK answerPK) {
-        this.answerPK = answerPK;
+    public Answer(Integer idAnswer) {
+        this.idAnswer = idAnswer;
     }
 
-    public Answer(int idAnswer, int idQuestion) {
-        this.answerPK = new AnswerPK(idAnswer, idQuestion);
+    public Integer getIdAnswer() {
+        return idAnswer;
     }
 
-    public AnswerPK getAnswerPK() {
-        return answerPK;
-    }
-
-    public void setAnswerPK(AnswerPK answerPK) {
-        this.answerPK = answerPK;
+    public void setIdAnswer(Integer idAnswer) {
+        this.idAnswer = idAnswer;
     }
 
     public String getText() {
@@ -90,18 +95,18 @@ public class Answer implements Serializable {
         this.answeritemList = answeritemList;
     }
 
-    public Question getQuestion() {
-        return question;
+    public Question getIdQuestion() {
+        return idQuestion;
     }
 
-    public void setQuestion(Question question) {
-        this.question = question;
+    public void setIdQuestion(Question idQuestion) {
+        this.idQuestion = idQuestion;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (answerPK != null ? answerPK.hashCode() : 0);
+        hash += (idAnswer != null ? idAnswer.hashCode() : 0);
         return hash;
     }
 
@@ -112,7 +117,7 @@ public class Answer implements Serializable {
             return false;
         }
         Answer other = (Answer) object;
-        if ((this.answerPK == null && other.answerPK != null) || (this.answerPK != null && !this.answerPK.equals(other.answerPK))) {
+        if ((this.idAnswer == null && other.idAnswer != null) || (this.idAnswer != null && !this.idAnswer.equals(other.idAnswer))) {
             return false;
         }
         return true;
@@ -120,7 +125,7 @@ public class Answer implements Serializable {
 
     @Override
     public String toString() {
-        return "domain.Answer[ answerPK=" + answerPK + " ]";
+        return "domain.Answer[ idAnswer=" + idAnswer + " ]";
     }
     
 }

@@ -1,11 +1,19 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
 package domain;
 
 import java.io.Serializable;
 import java.util.Date;
+import javax.persistence.Basic;
 import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -17,51 +25,40 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Tihomir Radosavljvic
- * @version 1.0
+ * @author tihomir
  */
 @Entity
 @Table(name = "result")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Result.findAll", query = "SELECT r FROM Result r"),
-    @NamedQuery(name = "Result.findByIdClient", query = "SELECT r FROM Result r WHERE r.resultPK.idClient = :idClient"),
-    @NamedQuery(name = "Result.findByIdTest", query = "SELECT r FROM Result r WHERE r.resultPK.idTest = :idTest"),
     @NamedQuery(name = "Result.findByDate", query = "SELECT r FROM Result r WHERE r.date = :date"),
-    @NamedQuery(name = "Result.findByValue", query = "SELECT r FROM Result r WHERE r.value = :value")})
+    @NamedQuery(name = "Result.findByValue", query = "SELECT r FROM Result r WHERE r.value = :value"),
+    @NamedQuery(name = "Result.findByIdMaster", query = "SELECT r FROM Result r WHERE r.idMaster = :idMaster")})
 public class Result implements Serializable {
     private static final long serialVersionUID = 1L;
-    @EmbeddedId
-    protected ResultPK resultPK;
     @Column(name = "date")
     @Temporal(TemporalType.DATE)
     private Date date;
     @Column(name = "value")
     private Integer value;
-    @JoinColumn(name = "idTest", referencedColumnName = "idTest", insertable = false, updatable = false)
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private Test test;
-    @JoinColumn(name = "idClient", referencedColumnName = "idClient", insertable = false, updatable = false)
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private Client client;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "idMaster")
+    private Integer idMaster;
+    @JoinColumn(name = "idTest", referencedColumnName = "idTest")
+    @ManyToOne(optional = false)
+    private Test idTest;
+    @JoinColumn(name = "idClient", referencedColumnName = "idClient")
+    @ManyToOne(optional = false)
+    private Client idClient;
 
     public Result() {
     }
 
-    public Result(ResultPK resultPK) {
-        this.resultPK = resultPK;
-    }
-
-    public Result(int idClient, int idTest) {
-        this.resultPK = new ResultPK(idClient, idTest);
-    }
-
-    public ResultPK getResultPK() {
-        return resultPK;
-    }
-
-    public void setResultPK(ResultPK resultPK) {
-        this.resultPK = resultPK;
+    public Result(Integer idMaster) {
+        this.idMaster = idMaster;
     }
 
     public Date getDate() {
@@ -80,26 +77,34 @@ public class Result implements Serializable {
         this.value = value;
     }
 
-    public Test getTest() {
-        return test;
+    public Integer getIdMaster() {
+        return idMaster;
     }
 
-    public void setTest(Test test) {
-        this.test = test;
+    public void setIdMaster(Integer idMaster) {
+        this.idMaster = idMaster;
     }
 
-    public Client getClient() {
-        return client;
+    public Test getIdTest() {
+        return idTest;
     }
 
-    public void setClient(Client client) {
-        this.client = client;
+    public void setIdTest(Test idTest) {
+        this.idTest = idTest;
+    }
+
+    public Client getIdClient() {
+        return idClient;
+    }
+
+    public void setIdClient(Client idClient) {
+        this.idClient = idClient;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (resultPK != null ? resultPK.hashCode() : 0);
+        hash += (idMaster != null ? idMaster.hashCode() : 0);
         return hash;
     }
 
@@ -110,7 +115,7 @@ public class Result implements Serializable {
             return false;
         }
         Result other = (Result) object;
-        if ((this.resultPK == null && other.resultPK != null) || (this.resultPK != null && !this.resultPK.equals(other.resultPK))) {
+        if ((this.idMaster == null && other.idMaster != null) || (this.idMaster != null && !this.idMaster.equals(other.idMaster))) {
             return false;
         }
         return true;
@@ -118,7 +123,7 @@ public class Result implements Serializable {
 
     @Override
     public String toString() {
-        return "domain.Result[ resultPK=" + resultPK + " ]";
+        return "domain.Result[ idMaster=" + idMaster + " ]";
     }
     
 }

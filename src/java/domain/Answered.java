@@ -1,9 +1,18 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
 package domain;
 
 import java.io.Serializable;
-import javax.persistence.EmbeddedId;
+import javax.persistence.Basic;
+import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -13,90 +22,85 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Tihomir Radosavljvic
- * @version 1.0
+ * @author tihomir
  */
 @Entity
 @Table(name = "answered")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Answered.findAll", query = "SELECT a FROM Answered a"),
-    @NamedQuery(name = "Answered.findByIdClient", query = "SELECT a FROM Answered a WHERE a.answeredPK.idClient = :idClient"),
-    @NamedQuery(name = "Answered.findByIdTest", query = "SELECT a FROM Answered a WHERE a.answeredPK.idTest = :idTest"),
-    @NamedQuery(name = "Answered.findByIdQuestion", query = "SELECT a FROM Answered a WHERE a.answeredPK.idQuestion = :idQuestion"),
-    @NamedQuery(name = "Answered.findByIdItemTest", query = "SELECT a FROM Answered a WHERE a.answeredPK.idItemTest = :idItemTest")})
+    @NamedQuery(name = "Answered.findByIdMaster", query = "SELECT a FROM Answered a WHERE a.idMaster = :idMaster")})
 public class Answered implements Serializable {
     private static final long serialVersionUID = 1L;
-    @EmbeddedId
-    protected AnsweredPK answeredPK;
-    @JoinColumn(name = "idQuestion", referencedColumnName = "idQuestion", insertable = false, updatable = false)
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private Question question;
-    @JoinColumn(name = "idItemTest", referencedColumnName = "idItemTest", insertable = false, updatable = false)
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private Testitem testitem;
-    @JoinColumn(name = "idTest", referencedColumnName = "idTest", insertable = false, updatable = false)
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private Test test;
-    @JoinColumn(name = "idClient", referencedColumnName = "idClient", insertable = false, updatable = false)
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private Client client;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "idMaster")
+    private Integer idMaster;
+    @JoinColumn(name = "idItemTest", referencedColumnName = "idItemTest")
+    @ManyToOne(optional = false)
+    private Testitem idItemTest;
+    @JoinColumn(name = "idQuestion", referencedColumnName = "idQuestion")
+    @ManyToOne(optional = false)
+    private Question idQuestion;
+    @JoinColumn(name = "idTest", referencedColumnName = "idTest")
+    @ManyToOne(optional = false)
+    private Test idTest;
+    @JoinColumn(name = "idClient", referencedColumnName = "idClient")
+    @ManyToOne(optional = false)
+    private Client idClient;
 
     public Answered() {
     }
 
-    public Answered(AnsweredPK answeredPK) {
-        this.answeredPK = answeredPK;
+    public Answered(Integer idMaster) {
+        this.idMaster = idMaster;
     }
 
-    public Answered(int idClient, int idTest, int idQuestion, int idItemTest) {
-        this.answeredPK = new AnsweredPK(idClient, idTest, idQuestion, idItemTest);
+    public Integer getIdMaster() {
+        return idMaster;
     }
 
-    public AnsweredPK getAnsweredPK() {
-        return answeredPK;
+    public void setIdMaster(Integer idMaster) {
+        this.idMaster = idMaster;
     }
 
-    public void setAnsweredPK(AnsweredPK answeredPK) {
-        this.answeredPK = answeredPK;
+    public Testitem getIdItemTest() {
+        return idItemTest;
     }
 
-    public Question getQuestion() {
-        return question;
+    public void setIdItemTest(Testitem idItemTest) {
+        this.idItemTest = idItemTest;
     }
 
-    public void setQuestion(Question question) {
-        this.question = question;
+    public Question getIdQuestion() {
+        return idQuestion;
     }
 
-    public Testitem getTestitem() {
-        return testitem;
+    public void setIdQuestion(Question idQuestion) {
+        this.idQuestion = idQuestion;
     }
 
-    public void setTestitem(Testitem testitem) {
-        this.testitem = testitem;
+    public Test getIdTest() {
+        return idTest;
     }
 
-    public Test getTest() {
-        return test;
+    public void setIdTest(Test idTest) {
+        this.idTest = idTest;
     }
 
-    public void setTest(Test test) {
-        this.test = test;
+    public Client getIdClient() {
+        return idClient;
     }
 
-    public Client getClient() {
-        return client;
-    }
-
-    public void setClient(Client client) {
-        this.client = client;
+    public void setIdClient(Client idClient) {
+        this.idClient = idClient;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (answeredPK != null ? answeredPK.hashCode() : 0);
+        hash += (idMaster != null ? idMaster.hashCode() : 0);
         return hash;
     }
 
@@ -107,7 +111,7 @@ public class Answered implements Serializable {
             return false;
         }
         Answered other = (Answered) object;
-        if ((this.answeredPK == null && other.answeredPK != null) || (this.answeredPK != null && !this.answeredPK.equals(other.answeredPK))) {
+        if ((this.idMaster == null && other.idMaster != null) || (this.idMaster != null && !this.idMaster.equals(other.idMaster))) {
             return false;
         }
         return true;
@@ -115,7 +119,7 @@ public class Answered implements Serializable {
 
     @Override
     public String toString() {
-        return "domain.Answered[ answeredPK=" + answeredPK + " ]";
+        return "domain.Answered[ idMaster=" + idMaster + " ]";
     }
     
 }

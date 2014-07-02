@@ -1,3 +1,9 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
 package domain;
 
 import java.io.Serializable;
@@ -6,7 +12,6 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -22,8 +27,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Tihomir Radosavljvic
- * @version 1.0
+ * @author tihomir
  */
 @Entity
 @Table(name = "question")
@@ -48,16 +52,16 @@ public class Question implements Serializable {
     private Boolean approved;
     @Column(name = "deleted")
     private Boolean deleted;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "question", fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idQuestion")
     private List<Answeritem> answeritemList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "question", fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idQuestion")
     private List<Answer> answerList;
     @JoinColumn(name = "idCat", referencedColumnName = "idCat")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     private Category idCat;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "question", fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idQuestion")
     private List<Testitem> testitemList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "question", fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idQuestion")
     private List<Answered> answeredList;
 
     public Question() {

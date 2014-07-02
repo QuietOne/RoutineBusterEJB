@@ -1,11 +1,20 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
 package domain;
 
 import java.io.Serializable;
 import java.util.List;
+import javax.persistence.Basic;
 import javax.persistence.CascadeType;
-import javax.persistence.EmbeddedId;
+import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -17,49 +26,45 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author Tihomir Radosavljvic
- * @version 1.0
+ * @author tihomir
  */
 @Entity
 @Table(name = "testitem")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Testitem.findAll", query = "SELECT t FROM Testitem t"),
-    @NamedQuery(name = "Testitem.findByIdItemTest", query = "SELECT t FROM Testitem t WHERE t.testitemPK.idItemTest = :idItemTest"),
-    @NamedQuery(name = "Testitem.findByIdTest", query = "SELECT t FROM Testitem t WHERE t.testitemPK.idTest = :idTest"),
-    @NamedQuery(name = "Testitem.findByIdQuestion", query = "SELECT t FROM Testitem t WHERE t.testitemPK.idQuestion = :idQuestion")})
+    @NamedQuery(name = "Testitem.findByIdItemTest", query = "SELECT t FROM Testitem t WHERE t.idItemTest = :idItemTest")})
 public class Testitem implements Serializable {
     private static final long serialVersionUID = 1L;
-    @EmbeddedId
-    protected TestitemPK testitemPK;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "testitem", fetch = FetchType.LAZY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "idItemTest")
+    private Integer idItemTest;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idItemTest")
     private List<Answeritem> answeritemList;
-    @JoinColumn(name = "idQuestion", referencedColumnName = "idQuestion", insertable = false, updatable = false)
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private Question question;
-    @JoinColumn(name = "idTest", referencedColumnName = "idTest", insertable = false, updatable = false)
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private Test test;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "testitem", fetch = FetchType.LAZY)
+    @JoinColumn(name = "idQuestion", referencedColumnName = "idQuestion")
+    @ManyToOne(optional = false)
+    private Question idQuestion;
+    @JoinColumn(name = "idTest", referencedColumnName = "idTest")
+    @ManyToOne(optional = false)
+    private Test idTest;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idItemTest")
     private List<Answered> answeredList;
 
     public Testitem() {
     }
 
-    public Testitem(TestitemPK testitemPK) {
-        this.testitemPK = testitemPK;
+    public Testitem(Integer idItemTest) {
+        this.idItemTest = idItemTest;
     }
 
-    public Testitem(int idItemTest, int idTest, int idQuestion) {
-        this.testitemPK = new TestitemPK(idItemTest, idTest, idQuestion);
+    public Integer getIdItemTest() {
+        return idItemTest;
     }
 
-    public TestitemPK getTestitemPK() {
-        return testitemPK;
-    }
-
-    public void setTestitemPK(TestitemPK testitemPK) {
-        this.testitemPK = testitemPK;
+    public void setIdItemTest(Integer idItemTest) {
+        this.idItemTest = idItemTest;
     }
 
     @XmlTransient
@@ -71,20 +76,20 @@ public class Testitem implements Serializable {
         this.answeritemList = answeritemList;
     }
 
-    public Question getQuestion() {
-        return question;
+    public Question getIdQuestion() {
+        return idQuestion;
     }
 
-    public void setQuestion(Question question) {
-        this.question = question;
+    public void setIdQuestion(Question idQuestion) {
+        this.idQuestion = idQuestion;
     }
 
-    public Test getTest() {
-        return test;
+    public Test getIdTest() {
+        return idTest;
     }
 
-    public void setTest(Test test) {
-        this.test = test;
+    public void setIdTest(Test idTest) {
+        this.idTest = idTest;
     }
 
     @XmlTransient
@@ -99,7 +104,7 @@ public class Testitem implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (testitemPK != null ? testitemPK.hashCode() : 0);
+        hash += (idItemTest != null ? idItemTest.hashCode() : 0);
         return hash;
     }
 
@@ -110,7 +115,7 @@ public class Testitem implements Serializable {
             return false;
         }
         Testitem other = (Testitem) object;
-        if ((this.testitemPK == null && other.testitemPK != null) || (this.testitemPK != null && !this.testitemPK.equals(other.testitemPK))) {
+        if ((this.idItemTest == null && other.idItemTest != null) || (this.idItemTest != null && !this.idItemTest.equals(other.idItemTest))) {
             return false;
         }
         return true;
@@ -118,7 +123,7 @@ public class Testitem implements Serializable {
 
     @Override
     public String toString() {
-        return "domain.Testitem[ testitemPK=" + testitemPK + " ]";
+        return "domain.Testitem[ idItemTest=" + idItemTest + " ]";
     }
     
 }

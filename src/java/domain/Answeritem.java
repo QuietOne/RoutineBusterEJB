@@ -1,9 +1,18 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
 package domain;
 
 import java.io.Serializable;
-import javax.persistence.EmbeddedId;
+import javax.persistence.Basic;
+import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -13,90 +22,85 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Tihomir Radosavljvic
- * @version 1.0
+ * @author tihomir
  */
 @Entity
 @Table(name = "answeritem")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Answeritem.findAll", query = "SELECT a FROM Answeritem a"),
-    @NamedQuery(name = "Answeritem.findByIdTest", query = "SELECT a FROM Answeritem a WHERE a.answeritemPK.idTest = :idTest"),
-    @NamedQuery(name = "Answeritem.findByIdQuestion", query = "SELECT a FROM Answeritem a WHERE a.answeritemPK.idQuestion = :idQuestion"),
-    @NamedQuery(name = "Answeritem.findByIdItemTest", query = "SELECT a FROM Answeritem a WHERE a.answeritemPK.idItemTest = :idItemTest"),
-    @NamedQuery(name = "Answeritem.findByIdAnswer", query = "SELECT a FROM Answeritem a WHERE a.answeritemPK.idAnswer = :idAnswer")})
+    @NamedQuery(name = "Answeritem.findByIdMaster", query = "SELECT a FROM Answeritem a WHERE a.idMaster = :idMaster")})
 public class Answeritem implements Serializable {
     private static final long serialVersionUID = 1L;
-    @EmbeddedId
-    protected AnsweritemPK answeritemPK;
-    @JoinColumn(name = "idQuestion", referencedColumnName = "idQuestion", insertable = false, updatable = false)
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private Question question;
-    @JoinColumn(name = "idAnswer", referencedColumnName = "idAnswer", insertable = false, updatable = false)
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private Answer answer;
-    @JoinColumn(name = "idItemTest", referencedColumnName = "idItemTest", insertable = false, updatable = false)
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private Testitem testitem;
-    @JoinColumn(name = "idTest", referencedColumnName = "idTest", insertable = false, updatable = false)
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private Test test;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "idMaster")
+    private Integer idMaster;
+    @JoinColumn(name = "idAnswer", referencedColumnName = "idAnswer")
+    @ManyToOne(optional = false)
+    private Answer idAnswer;
+    @JoinColumn(name = "idItemTest", referencedColumnName = "idItemTest")
+    @ManyToOne(optional = false)
+    private Testitem idItemTest;
+    @JoinColumn(name = "idQuestion", referencedColumnName = "idQuestion")
+    @ManyToOne(optional = false)
+    private Question idQuestion;
+    @JoinColumn(name = "idTest", referencedColumnName = "idTest")
+    @ManyToOne(optional = false)
+    private Test idTest;
 
     public Answeritem() {
     }
 
-    public Answeritem(AnsweritemPK answeritemPK) {
-        this.answeritemPK = answeritemPK;
+    public Answeritem(Integer idMaster) {
+        this.idMaster = idMaster;
     }
 
-    public Answeritem(int idTest, int idQuestion, int idItemTest, int idAnswer) {
-        this.answeritemPK = new AnsweritemPK(idTest, idQuestion, idItemTest, idAnswer);
+    public Integer getIdMaster() {
+        return idMaster;
     }
 
-    public AnsweritemPK getAnsweritemPK() {
-        return answeritemPK;
+    public void setIdMaster(Integer idMaster) {
+        this.idMaster = idMaster;
     }
 
-    public void setAnsweritemPK(AnsweritemPK answeritemPK) {
-        this.answeritemPK = answeritemPK;
+    public Answer getIdAnswer() {
+        return idAnswer;
     }
 
-    public Question getQuestion() {
-        return question;
+    public void setIdAnswer(Answer idAnswer) {
+        this.idAnswer = idAnswer;
     }
 
-    public void setQuestion(Question question) {
-        this.question = question;
+    public Testitem getIdItemTest() {
+        return idItemTest;
     }
 
-    public Answer getAnswer() {
-        return answer;
+    public void setIdItemTest(Testitem idItemTest) {
+        this.idItemTest = idItemTest;
     }
 
-    public void setAnswer(Answer answer) {
-        this.answer = answer;
+    public Question getIdQuestion() {
+        return idQuestion;
     }
 
-    public Testitem getTestitem() {
-        return testitem;
+    public void setIdQuestion(Question idQuestion) {
+        this.idQuestion = idQuestion;
     }
 
-    public void setTestitem(Testitem testitem) {
-        this.testitem = testitem;
+    public Test getIdTest() {
+        return idTest;
     }
 
-    public Test getTest() {
-        return test;
-    }
-
-    public void setTest(Test test) {
-        this.test = test;
+    public void setIdTest(Test idTest) {
+        this.idTest = idTest;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (answeritemPK != null ? answeritemPK.hashCode() : 0);
+        hash += (idMaster != null ? idMaster.hashCode() : 0);
         return hash;
     }
 
@@ -107,7 +111,7 @@ public class Answeritem implements Serializable {
             return false;
         }
         Answeritem other = (Answeritem) object;
-        if ((this.answeritemPK == null && other.answeritemPK != null) || (this.answeritemPK != null && !this.answeritemPK.equals(other.answeritemPK))) {
+        if ((this.idMaster == null && other.idMaster != null) || (this.idMaster != null && !this.idMaster.equals(other.idMaster))) {
             return false;
         }
         return true;
@@ -115,7 +119,7 @@ public class Answeritem implements Serializable {
 
     @Override
     public String toString() {
-        return "domain.Answeritem[ answeritemPK=" + answeritemPK + " ]";
+        return "domain.Answeritem[ idMaster=" + idMaster + " ]";
     }
     
 }

@@ -29,7 +29,7 @@ CREATE TABLE `answer` (
   `idQuestion` int(7) NOT NULL,
   `text` varchar(250) COLLATE utf8_unicode_ci DEFAULT NULL,
   `correct` tinyint(1) DEFAULT '0',
-  PRIMARY KEY (`idAnswer`,`idQuestion`),
+  PRIMARY KEY (`idAnswer`),
   KEY `idQuestion` (`idQuestion`),
   CONSTRAINT `answer_ibfk_1` FOREIGN KEY (`idQuestion`) REFERENCES `question` (`idQuestion`)
 ) ENGINE=InnoDB AUTO_INCREMENT=134 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -57,14 +57,16 @@ CREATE TABLE `answered` (
   `idTest` int(7) NOT NULL,
   `idQuestion` int(7) NOT NULL,
   `idItemTest` int(7) NOT NULL,
-  PRIMARY KEY (`idClient`,`idQuestion`,`idItemTest`,`idTest`),
+  `idMaster` int(7) NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`idMaster`),
   KEY `idTest` (`idTest`),
   KEY `idItemTest` (`idItemTest`),
   KEY `idQuestion` (`idQuestion`),
-  CONSTRAINT `answered_ibfk_1` FOREIGN KEY (`idClient`) REFERENCES `client` (`idClient`),
-  CONSTRAINT `answered_ibfk_2` FOREIGN KEY (`idTest`) REFERENCES `test` (`idTest`),
-  CONSTRAINT `answered_ibfk_3` FOREIGN KEY (`idItemTest`) REFERENCES `testitem` (`idItemTest`),
-  CONSTRAINT `answered_ibfk_4` FOREIGN KEY (`idQuestion`) REFERENCES `question` (`idQuestion`)
+  KEY `fk_answered_client_idx` (`idClient`),
+  CONSTRAINT `fk_answered_client` FOREIGN KEY (`idClient`) REFERENCES `client` (`idClient`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_answered_test` FOREIGN KEY (`idTest`) REFERENCES `test` (`idTest`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_answered_question` FOREIGN KEY (`idQuestion`) REFERENCES `question` (`idQuestion`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_answered_itemtest` FOREIGN KEY (`idItemTest`) REFERENCES `testitem` (`idItemTest`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -89,14 +91,16 @@ CREATE TABLE `answeritem` (
   `idQuestion` int(7) NOT NULL,
   `idItemTest` int(7) NOT NULL,
   `idAnswer` int(7) NOT NULL,
-  PRIMARY KEY (`idItemTest`,`idTest`,`idQuestion`,`idAnswer`),
+  `idMaster` int(7) NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`idMaster`),
   KEY `idTest` (`idTest`),
-  KEY `idAnswer` (`idAnswer`),
-  KEY `idQuestion` (`idQuestion`),
-  CONSTRAINT `answeritem_ibfk_1` FOREIGN KEY (`idTest`) REFERENCES `test` (`idTest`),
-  CONSTRAINT `answeritem_ibfk_2` FOREIGN KEY (`idItemTest`) REFERENCES `testitem` (`idItemTest`),
-  CONSTRAINT `answeritem_ibfk_3` FOREIGN KEY (`idAnswer`) REFERENCES `answer` (`idAnswer`),
-  CONSTRAINT `answeritem_ibfk_4` FOREIGN KEY (`idQuestion`) REFERENCES `question` (`idQuestion`)
+  KEY `fk_answeritem_question_idx` (`idQuestion`),
+  KEY `fk_answeritem_itemtest_idx` (`idItemTest`),
+  KEY `fk_answeritem_answer_idx` (`idAnswer`),
+  CONSTRAINT `fk_answeritem_test` FOREIGN KEY (`idTest`) REFERENCES `test` (`idTest`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_answeritem_question` FOREIGN KEY (`idQuestion`) REFERENCES `question` (`idQuestion`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_answeritem_itemtest` FOREIGN KEY (`idItemTest`) REFERENCES `testitem` (`idItemTest`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_answeritem_answer` FOREIGN KEY (`idAnswer`) REFERENCES `answer` (`idAnswer`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -208,10 +212,12 @@ CREATE TABLE `result` (
   `idTest` int(7) NOT NULL,
   `date` date DEFAULT NULL,
   `value` int(11) DEFAULT '0',
-  PRIMARY KEY (`idClient`,`idTest`),
-  KEY `idTest` (`idTest`),
-  CONSTRAINT `result_ibfk_1` FOREIGN KEY (`idClient`) REFERENCES `client` (`idClient`),
-  CONSTRAINT `result_ibfk_2` FOREIGN KEY (`idTest`) REFERENCES `test` (`idTest`)
+  `idMaster` int(7) NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`idMaster`),
+  KEY `fk_result_client_idx` (`idClient`),
+  KEY `fk_result_test_idx` (`idTest`),
+  CONSTRAINT `fk_result_client` FOREIGN KEY (`idClient`) REFERENCES `client` (`idClient`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_result_test` FOREIGN KEY (`idTest`) REFERENCES `test` (`idTest`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -261,11 +267,11 @@ CREATE TABLE `testitem` (
   `idItemTest` int(7) NOT NULL AUTO_INCREMENT,
   `idTest` int(7) NOT NULL,
   `idQuestion` int(7) NOT NULL,
-  PRIMARY KEY (`idItemTest`,`idTest`,`idQuestion`),
-  KEY `idTest` (`idTest`),
-  KEY `idQuestion` (`idQuestion`),
-  CONSTRAINT `testitem_ibfk_1` FOREIGN KEY (`idTest`) REFERENCES `test` (`idTest`),
-  CONSTRAINT `testitem_ibfk_2` FOREIGN KEY (`idQuestion`) REFERENCES `question` (`idQuestion`)
+  PRIMARY KEY (`idItemTest`),
+  KEY `fk_testitem_test_idx` (`idTest`),
+  KEY `fk_testitem_question_idx` (`idQuestion`),
+  CONSTRAINT `fk_testitem_test` FOREIGN KEY (`idTest`) REFERENCES `test` (`idTest`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  CONSTRAINT `fk_testitem_question` FOREIGN KEY (`idQuestion`) REFERENCES `question` (`idQuestion`) ON DELETE NO ACTION ON UPDATE NO ACTION
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -287,4 +293,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2014-06-26 18:04:18
+-- Dump completed on 2014-07-02 10:48:19

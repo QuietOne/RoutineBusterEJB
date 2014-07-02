@@ -1,7 +1,7 @@
 package helper;
 
 import domain.Client;
-import session.user.SessionClient;
+import session.client.SessionClient;
 
 /**
  * Validate of client for input processing.

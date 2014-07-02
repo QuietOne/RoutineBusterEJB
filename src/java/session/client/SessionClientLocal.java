@@ -1,4 +1,4 @@
-package session.user;
+package session.client;
 
 import domain.Client;
 import java.util.List;

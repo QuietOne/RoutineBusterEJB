@@ -58,6 +58,10 @@ public class Answer implements Serializable {
     public Answer() {
     }
 
+    public Answer(String text) {
+        this.text = text;
+    }
+
     public Answer(Integer idAnswer) {
         this.idAnswer = idAnswer;
     }
@@ -125,7 +129,7 @@ public class Answer implements Serializable {
 
     @Override
     public String toString() {
-        return "domain.Answer[ idAnswer=" + idAnswer + " ]";
+        return text;
     }
     
 }

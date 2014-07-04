@@ -21,7 +21,7 @@ public class SessionAnswer implements SessionAnswerLocal {
     public List<Answer> getAnswers(Question question) {
         List<Answer> list = null;
         try {
-            list = em.createQuery("SELECT a FROM Answer a WHERE a.idQuestion=:question")
+            list = em.createQuery("SELECT a FROM Answer a WHERE a.idQuestion.idQuestion=:question")
                     .setParameter("question", question.getIdQuestion()).getResultList();
         } catch (Exception e) {
             e.printStackTrace();

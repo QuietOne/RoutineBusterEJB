@@ -22,7 +22,7 @@ public class SessionQuestion implements SessionQuestionLocal {
     public List<Question> getQuestions(Category category) {
         List<Question> list = null;
         try {
-            list = em.createQuery("SELECT q FROM Question q WHERE q.idCat=:cat")
+            list = em.createQuery("SELECT q FROM Question q WHERE q.idCat.idCat=:cat")
                     .setParameter("cat", category.getIdCat()).getResultList();
         } catch (Exception e) {
             e.printStackTrace();

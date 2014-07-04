@@ -169,7 +169,7 @@ public class Question implements Serializable {
 
     @Override
     public String toString() {
-        return "domain.Question[ idQuestion=" + idQuestion + " ]";
+        return text;
     }
     
 }

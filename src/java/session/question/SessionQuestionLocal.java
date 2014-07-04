@@ -21,7 +21,7 @@ public interface SessionQuestionLocal {
 
     void approveQuestion(Question question) throws Exception;
 
-    List<String> autocompleteQuestion(String text);
+    List<Question> autocompleteQuestion(String text);
 
     void deleteQuestion(Question question) throws Exception;
 

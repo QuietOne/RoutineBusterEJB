@@ -47,20 +47,15 @@ public class SessionQuestion implements SessionQuestionLocal {
     }
 
     @Override
-    public List<String> autocompleteQuestion(String text) {
+    public List<Question> autocompleteQuestion(String text) {
         List<Question> list = null;
-        List<String> questions = null;
         try {
             list = em.createQuery("SELECT q FROM Question q WHERE q.text LIKE :te LIMIT 10")
                     .setParameter("te", text + "%").getResultList();
-            for (Question q : list) {
-                questions.add(q.getText());
-
-            }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return questions;
+        return list;
     }
    
 

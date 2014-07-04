@@ -11,6 +11,7 @@ import javax.persistence.PersistenceContext;
 /**
  *
  * @author Tihomir Radosavljevic
+ * @author Jelena Tabas
  * @version 1.0
  */
 @Stateless
@@ -106,8 +107,8 @@ public class SessionClient implements SessionClientLocal {
             throw new Exception("Email nije dobro unešen");
         }
     }
-    
-    private boolean validateUsername(String username){
+
+    private boolean validateUsername(String username) {
         Client client = null;
         try {
             client = getClient(username);
@@ -133,4 +134,22 @@ public class SessionClient implements SessionClientLocal {
         }
         return list;
     }
+
+    @Override
+    public void changePassword(String username, String oldPass, String newPass, String confirmPass) {
+        Client client = null;
+        Validate validate = new Validate();
+
+        try {
+            client = getClient(username);
+            if (client.getPassword().equals(oldPass)) {
+                if (validate.changePassword(oldPass, newPass, newPass)) {
+                    updateClient(client);
+                }
+            }
+        } catch (Exception ex) {
+
+        }
+    }
+
 }

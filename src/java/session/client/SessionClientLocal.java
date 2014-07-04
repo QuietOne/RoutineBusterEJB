@@ -7,6 +7,7 @@ import javax.ejb.Local;
 /**
  *
  * @author Tihomir Radosavljevic
+ * @author Jelena Tabas
  * @version 1.0
  */
 @Local
@@ -23,6 +24,8 @@ public interface SessionClientLocal {
     void approveClient(Client client) throws Exception;
 
     void validateRegister(Client client, String confirmPassword) throws Exception;
+    
+    void changePassword(String username, String oldPass, String newPass, String confirmPass);
 
     void addClient(Client client) throws Exception;
 

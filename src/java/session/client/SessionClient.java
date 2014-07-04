@@ -141,7 +141,14 @@ public class SessionClient implements SessionClientLocal {
         Validate validate = new Validate();
         try {
             client = getClient(username);
-            System.out.println(client.getUsername());
+            /* 
+             System.out.println("un: " + client.getUsername());
+             System.out.println("op: " + oldPass);
+             System.out.println("np: " + newPass);
+             System.out.println("cp: " + confirmPass);
+             System.out.println("old = new : " + client.getPassword().equals(oldPass));
+             System.out.println("val: " + validate.changePassword(oldPass, newPass, newPass));
+             */
             if (client.getPassword().equals(oldPass)) {
                 if (validate.changePassword(oldPass, newPass, newPass)) {
                     updateClient(client);

@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package domain;
 
 import java.io.Serializable;
@@ -36,6 +35,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Result.findByValue", query = "SELECT r FROM Result r WHERE r.value = :value"),
     @NamedQuery(name = "Result.findByIdMaster", query = "SELECT r FROM Result r WHERE r.idMaster = :idMaster")})
 public class Result implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Column(name = "date")
     @Temporal(TemporalType.DATE)
@@ -75,6 +75,10 @@ public class Result implements Serializable {
 
     public void setValue(Integer value) {
         this.value = value;
+    }
+
+    public void increaseValue() {
+        value++;
     }
 
     public Integer getIdMaster() {
@@ -125,5 +129,5 @@ public class Result implements Serializable {
     public String toString() {
         return "domain.Result[ idMaster=" + idMaster + " ]";
     }
-    
+
 }

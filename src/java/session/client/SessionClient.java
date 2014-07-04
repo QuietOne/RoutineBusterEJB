@@ -139,9 +139,9 @@ public class SessionClient implements SessionClientLocal {
     public void changePassword(String username, String oldPass, String newPass, String confirmPass) {
         Client client = null;
         Validate validate = new Validate();
-
         try {
             client = getClient(username);
+            System.out.println(client.getUsername());
             if (client.getPassword().equals(oldPass)) {
                 if (validate.changePassword(oldPass, newPass, newPass)) {
                     updateClient(client);

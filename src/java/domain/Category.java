@@ -147,7 +147,7 @@ public class Category implements Serializable {
 
     @Override
     public String toString() {
-        return "domain.Category[ idCat=" + idCat + " ]";
+        return name;
     }
     
 }

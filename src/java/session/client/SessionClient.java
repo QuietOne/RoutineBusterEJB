@@ -70,7 +70,6 @@ public class SessionClient implements SessionClientLocal {
 
     @Override
     public void updateClient(Client client) throws Exception {
-        System.out.println("izmeni korisnika");
         em.merge(client);
         em.flush();
     }
@@ -138,26 +137,19 @@ public class SessionClient implements SessionClientLocal {
     }
 
     @Override
-    public void changePassword(String username, String oldPass, String newPass, String confirmPass) {
-        Client client = null;
+    public void changePassword(String username, String oldPass, String newPass, String confirmPass) throws Exception {
         Validate validate = new Validate();
-        try {
-            client = getClient(username);
-            /* 
-             System.out.println("un: " + client.getUsername());
-             System.out.println("op: " + oldPass);
-             System.out.println("np: " + newPass);
-             System.out.println("cp: " + confirmPass);
-             System.out.println("old = new : " + client.getPassword().equals(oldPass));
-             System.out.println("val: " + validate.changePassword(oldPass, newPass, newPass));
-             */
-            if (client.getPassword().equals(oldPass)) {
-                if (validate.changePassword(oldPass, newPass, newPass)) {
-                    updateClient(client);
-                }
+        Client client = getClient(username);
+        if (client.getPassword().equals(oldPass)) {
+            validate.changePassword(oldPass, newPass, confirmPass);
+            client.setPassword(newPass);
+            try {
+                updateClient(client);
+            } catch (Exception e) {
+                throw new Exception("Greska sa serverom");
             }
-        } catch (Exception ex) {
-
+        } else {
+            throw new Exception("Ukucana stara sifra se ne poklapa sa onom koja se nalazi na serveru");
         }
     }
 

@@ -25,7 +25,7 @@ public interface SessionClientLocal {
 
     void validateRegister(Client client, String confirmPassword) throws Exception;
     
-    void changePassword(String username, String oldPass, String newPass, String confirmPass);
+    void changePassword(String username, String oldPass, String newPass, String confirmPass) throws Exception;
 
     void addClient(Client client) throws Exception;
 

@@ -76,15 +76,16 @@ public class Validate {
      * @param oldPassword the previous password
      * @param newPassword1 the first new password
      * @param newPassword2 the second new password
-     * @return true if requirements are met
      */
-    public boolean changePassword(String oldPassword, String newPassword1, String newPassword2) throws Exception {
+    public void changePassword(String oldPassword, String newPassword1, String newPassword2) throws Exception {
         /*if (!Controller.getInstance().getActiveClient().getPassword().equals(oldPassword)) {
          throw new Exception("Sifra se ne poklapa sa prethodnom");
          }*/
         if (!newPassword1.equals(newPassword2)) {
             throw new Exception("Sifre nisu iste");
         }
-        return password(newPassword2);
+        if (!password(newPassword2)) {
+            throw new Exception("Sifra mora imati bar 8 karaktera");
+        }
     }
 }

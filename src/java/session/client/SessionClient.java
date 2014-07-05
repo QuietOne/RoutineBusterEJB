@@ -70,7 +70,9 @@ public class SessionClient implements SessionClientLocal {
 
     @Override
     public void updateClient(Client client) throws Exception {
+        System.out.println("izmeni korisnika");
         em.merge(client);
+        em.flush();
     }
 
     @Override

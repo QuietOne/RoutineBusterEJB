@@ -50,8 +50,9 @@ public class SessionQuestion implements SessionQuestionLocal {
     public List<Question> autocompleteQuestion(String text) {
         List<Question> list = null;
         try {
-            list = em.createQuery("SELECT q FROM Question q WHERE q.text LIKE :te LIMIT 10")
+            list = em.createQuery("SELECT q FROM Question q WHERE q.text LIKE :te")
                     .setParameter("te", text + "%").getResultList();
+            list = list.subList(0, Math.min(list.size(), 10));
         } catch (Exception e) {
             e.printStackTrace();
         }

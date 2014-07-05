@@ -59,8 +59,9 @@ public class SessionCategory implements SessionCategoryLocal {
     public List<Category> autocompleteCategory(String name) {
         List<Category> list = null;
         try {
-            list = em.createQuery("SELECT c FROM Category c WHERE c.name LIKE :name LIMIT 10")
+            list = em.createQuery("SELECT c FROM Category c WHERE c.name LIKE :name")
                     .setParameter("name", name + "%").getResultList();
+            list = list.subList(0, Math.min(0, list.size()));
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -26,4 +26,6 @@ public interface SessionCategoryLocal {
 
     void attachChildren(Category category);
 
+    public List<Category> autocompleteApproveCategory(String text);
+
 }

@@ -27,4 +27,6 @@ public interface SessionQuestionLocal {
 
     List<Question> autocompleteApproveQuestion(String text);
 
+    List<Question> autocompleteDeleteQuestion(String text);
+
 }

@@ -29,4 +29,6 @@ public interface SessionQuestionLocal {
 
     List<Question> autocompleteDeleteQuestion(String text);
 
+    List<Question> getQuestions();
+
 }

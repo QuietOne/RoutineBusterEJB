@@ -114,5 +114,14 @@ public class SessionQuestion implements SessionQuestionLocal {
         return list;
     }
 
-    
+    @Override
+    public List<Question> getQuestions() {
+        List<Question> list = null;
+        try {
+            list = em.createQuery("SELECT q FROM Question q").getResultList();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
 }

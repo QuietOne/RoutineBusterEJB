@@ -28,4 +28,6 @@ public interface SessionCategoryLocal {
 
     public List<Category> autocompleteApproveCategory(String text);
 
+    public List<Category> autocompleteDeleteCategory(String text);
+
 }

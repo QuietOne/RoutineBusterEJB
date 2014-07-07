@@ -14,7 +14,7 @@ import javax.persistence.PersistenceContext;
  */
 @Stateless
 public class SessionCategory implements SessionCategoryLocal {
-    
+
     @PersistenceContext(unitName = "RoutineBusterEJBPU")
     private EntityManager em;
 
@@ -94,7 +94,7 @@ public class SessionCategory implements SessionCategoryLocal {
 
     @Override
     public List<Category> autocompleteApproveCategory(String text) {
-     List<Category> list = null;
+        List<Category> list = null;
         try {
             List<Category> temp = em.createQuery("SELECT c FROM Category c WHERE c.name LIKE :na")
                     .setParameter("na", text + '%').getResultList();
@@ -104,7 +104,30 @@ public class SessionCategory implements SessionCategoryLocal {
                 if (!category.getApproved()) {
                     list.add(category);
                     i++;
-                    if (i==9) {
+                    if (i == 9) {
+                        break;
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    @Override
+    public List<Category> autocompleteDeleteCategory(String text) {
+        List<Category> list = null;
+        try {
+            List<Category> temp = em.createQuery("SELECT c FROM Category c WHERE c.name LIKE :na")
+                    .setParameter("na", text + '%').getResultList();
+            list = new ArrayList<Category>(10);
+            int i = 0;
+            for (Category category : temp) {
+                if (category.getApproved()) {
+                    list.add(category);
+                    i++;
+                    if (i == 9) {
                         break;
                     }
                 }

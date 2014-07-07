@@ -43,6 +43,7 @@ public class SessionCategory implements SessionCategoryLocal {
     @Override
     public void updateCategory(Category category) throws Exception {
         em.merge(category);
+        em.flush();
     }
 
     @Override
@@ -95,7 +96,7 @@ public class SessionCategory implements SessionCategoryLocal {
     public List<Category> autocompleteApproveCategory(String text) {
      List<Category> list = null;
         try {
-            List<Category> temp = em.createQuery("SELECT q FROM Category c WHERE c.name LIKE :na")
+            List<Category> temp = em.createQuery("SELECT c FROM Category c WHERE c.name LIKE :na")
                     .setParameter("na", text + '%').getResultList();
             list = new ArrayList<Category>(10);
             int i = 0;

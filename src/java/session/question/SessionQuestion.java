@@ -2,6 +2,7 @@ package session.question;
 
 import domain.Category;
 import domain.Question;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -58,12 +59,35 @@ public class SessionQuestion implements SessionQuestionLocal {
         }
         return list;
     }
-   
+    
 
     @Override
     public void deleteQuestion(Question question) throws Exception {
         question.setApproved(false);
         updateQuestion(question);
+    }
+
+    @Override
+    public List<Question> autocompleteApproveQuestion(String text) {
+        List<Question> list = null;
+        try {
+            List<Question> temp = em.createQuery("SELECT q FROM Question q WHERE q.text LIKE :te")
+                    .setParameter("te", text + '%').getResultList();
+            list = new ArrayList<Question>(10);
+            int i = 0;
+            for (Question question : temp) {
+                if (!question.getApproved()) {
+                    list.add(question);
+                    i++;
+                    if (i==9) {
+                        break;
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
     }
 
 }

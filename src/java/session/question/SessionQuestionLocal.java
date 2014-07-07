@@ -25,4 +25,6 @@ public interface SessionQuestionLocal {
 
     void deleteQuestion(Question question) throws Exception;
 
+    List<Question> autocompleteApproveQuestion(String text);
+
 }

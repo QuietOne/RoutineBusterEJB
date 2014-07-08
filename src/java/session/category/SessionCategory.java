@@ -10,6 +10,7 @@ import javax.persistence.PersistenceContext;
 /**
  *
  * @author Tihomir Radosavljevic
+ * @author Jelena Tabas
  * @version 1.0
  */
 @Stateless
@@ -132,6 +133,17 @@ public class SessionCategory implements SessionCategoryLocal {
                     }
                 }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    @Override
+    public List<Category> getCategories() {
+        List<Category> list = null;
+        try {
+            list = em.createQuery("SELECT c FROM Category c").getResultList();
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -30,4 +30,6 @@ public interface SessionCategoryLocal {
 
     public List<Category> autocompleteDeleteCategory(String text);
 
+    public List<Category> getCategories();
+
 }
